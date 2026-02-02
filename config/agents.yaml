@@ -1,0 +1,49 @@
+# =============================================================================
+# CyberShield - AI Agents Configuration
+# =============================================================================
+
+# Claude API settings (key should be in env var CLAUDE_API_KEY)
+claude:
+  model: claude-sonnet-4-20250514
+  max_tokens: 4096
+  temperature: 0.3
+
+# Agent coordination
+coordination:
+  timeout_ms: 5000
+  max_retries: 3
+  response_window_ms: 1000
+  max_concurrent: 10
+
+# Individual agent settings
+agents:
+  analyzer:
+    enabled: true
+    priority: high
+    timeout_ms: 10000
+
+  responder:
+    enabled: true
+    priority: high
+    timeout_ms: 5000
+
+  mitigator:
+    enabled: true
+    priority: critical
+    timeout_ms: 3000
+    auto_execute: true
+
+  reporter:
+    enabled: true
+    priority: medium
+    batch_size: 10
+
+  monitor:
+    enabled: true
+    priority: low
+    check_interval_seconds: 30
+
+# Message bus
+message_bus:
+  max_queue_size: 1000
+  worker_count: 4

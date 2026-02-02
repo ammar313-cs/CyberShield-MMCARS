@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }} - Real-time Security Monitoring</title>
+    <link rel="stylesheet" href="/static/css/styles.css?v=4">
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <img src="/static/images/logo.png" alt="CyberShield Logo" class="header-logo">
+                <div class="header-title">
+                    <h1>CyberShield</h1>
+                    <span class="subtitle">Multi-Model Cyber Attack Response System</span>
+                </div>
+            </div>
+            <nav class="nav-links">
+                <a href="/" class="nav-link active">Dashboard</a>
+                <a href="/about" class="nav-link">About</a>
+            </nav>
+            <div class="header-right">
+                <div class="auth-section" id="authSection">
+                    <input type="password" id="apiKeyInput" placeholder="Enter API Key" class="api-key-input">
+                    <button id="connectBtn" class="btn btn-connect">Connect</button>
+                </div>
+                <div class="status-indicator" id="connectionStatus">
+                    <span class="status-dot"></span>
+                    <span class="status-text">Disconnected</span>
+                </div>
+                <div class="timestamp" id="lastUpdate">--</div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- System Status Row -->
+            <section class="status-row">
+                <div class="status-card" id="overallStatus">
+                    <h3>System Status</h3>
+                    <div class="status-value healthy">Healthy</div>
+                </div>
+                <div class="status-card">
+                    <h3>Active Threats</h3>
+                    <div class="status-value" id="activeThreats">0</div>
+                </div>
+                <div class="status-card">
+                    <h3>Threats Detected</h3>
+                    <div class="status-value" id="threatsDetected">0</div>
+                </div>
+                <div class="status-card">
+                    <h3>Threats Mitigated</h3>
+                    <div class="status-value" id="threatsMitigated">0</div>
+                </div>
+                <div class="status-card">
+                    <h3>Success Rate</h3>
+                    <div class="status-value" id="successRate">0%</div>
+                </div>
+            </section>
+
+            <!-- Components Status - Clickable section -->
+            <section class="components-section clickable-section" onclick="dashboard.expandComponents()">
+                <div class="section-header">
+                    <h2>Component Status</h2>
+                    <span class="click-hint">Click to expand</span>
+                </div>
+                <div class="components-grid" id="componentsGrid">
+                    <!-- Populated by JavaScript -->
+                </div>
+            </section>
+
+            <!-- Agents Status - Clickable section -->
+            <section class="agents-section clickable-section" onclick="dashboard.expandAgents()">
+                <div class="section-header">
+                    <h2>Agent Status</h2>
+                    <span class="click-hint">Click to expand</span>
+                </div>
+                <div class="agents-grid" id="agentsGrid">
+                    <!-- Populated by JavaScript -->
+                </div>
+            </section>
+
+            <!-- Recent Alerts - Blurred preview with expand button -->
+            <section class="alerts-section preview-section">
+                <div class="section-header">
+                    <h2>Recent Alerts</h2>
+                    <button class="expand-modal-btn" onclick="event.stopPropagation(); dashboard.expandAlerts()" title="Open full view">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="section-preview">
+                    <div class="alerts-list" id="alertsList">
+                        <div class="no-alerts">No recent alerts</div>
+                    </div>
+                    <div class="preview-fade"></div>
+                </div>
+            </section>
+
+            <!-- Escalated Threats - Human Review Required -->
+            <section class="escalation-section preview-section" id="escalationSection" style="display: none;">
+                <div class="section-header">
+                    <h2>Human Review Required</h2>
+                    <span class="escalation-badge" id="escalationCount">0</span>
+                </div>
+                <div class="escalation-queue" id="escalationQueue">
+                    <div class="no-escalations">No threats awaiting review</div>
+                </div>
+            </section>
+
+            <!-- Active Threats - Blurred preview with expand button -->
+            <section class="threats-section preview-section">
+                <div class="section-header">
+                    <h2>Active Threats</h2>
+                    <button class="expand-modal-btn" onclick="event.stopPropagation(); dashboard.expandThreats()" title="Open full view">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="section-preview">
+                    <div class="threats-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Source IP</th>
+                                    <th>Attack Type</th>
+                                    <th>Severity</th>
+                                    <th>Status</th>
+                                    <th>Detected</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="threatsTableBody">
+                                <tr class="no-threats">
+                                    <td colspan="6">No active threats</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="preview-fade"></div>
+                </div>
+            </section>
+
+            <!-- Agent Actions - Blurred preview with expand button -->
+            <section class="agent-actions-section preview-section">
+                <div class="section-header">
+                    <h2>Agent Actions</h2>
+                    <div class="section-header-right">
+                        <span class="section-subtitle">Multi-model response pipeline</span>
+                        <button class="expand-modal-btn" onclick="event.stopPropagation(); dashboard.expandAgentActions()" title="Open full view">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="section-preview">
+                    <div class="agent-actions-list" id="agentActionsList">
+                        <div class="no-actions">No recent agent actions</div>
+                    </div>
+                    <div class="preview-fade"></div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-left">
+                <span>CyberShield v0.1.0</span>
+            </div>
+            <div class="footer-right">
+                <span id="systemTime">--</span>
+            </div>
+        </footer>
+    </div>
+
+    <script src="/static/js/dashboard.js?v=4"></script>
+</body>
+</html>

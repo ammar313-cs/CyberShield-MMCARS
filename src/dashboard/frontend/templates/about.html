@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - CyberShield</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <a href="/" class="logo-link">
+                    <img src="/static/images/logo.png" alt="CyberShield Logo" class="header-logo">
+                </a>
+                <div class="header-title">
+                    <h1>CyberShield</h1>
+                    <span class="subtitle">Multi-Model Cyber Attack Response System</span>
+                </div>
+            </div>
+            <nav class="nav-links">
+                <a href="/" class="nav-link">Dashboard</a>
+                <a href="/about" class="nav-link active">About</a>
+            </nav>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content about-content">
+            <!-- Hero Section -->
+            <section class="about-hero">
+                <div class="hero-logo-container">
+                    <img src="/static/images/logo.png" alt="CyberShield Logo" class="about-logo">
+                    <div class="hero-glow"></div>
+                </div>
+                <h2>CyberShield</h2>
+                <p class="hero-tagline">Multi-Model Cyber Attack Response System</p>
+                <p class="hero-text">
+                    An intelligent cyber defense platform that combines machine learning anomaly detection
+                    with AI-powered decision making to protect your infrastructure in real-time.
+                </p>
+            </section>
+
+            <!-- What is CyberShield -->
+            <section class="about-section">
+                <h3>What is CyberShield?</h3>
+                <div class="about-description">
+                    <p>
+                        CyberShield is a next-generation security monitoring and response system designed to act as an
+                        <strong>intelligent security layer</strong> for your network infrastructure. Think of it as a
+                        sophisticated sensor system embedded in your data pipeline - like a water quality monitor in a
+                        pipe that continuously scans flowing water for contaminants without interrupting the flow.
+                    </p>
+                    <p>
+                        The system intercepts network traffic data, feeds it through multiple layers of analysis including
+                        <strong>machine learning anomaly detection</strong> and <strong>AI-powered threat classification</strong>,
+                        and automatically responds to detected threats while allowing legitimate traffic to pass through unimpeded.
+                    </p>
+                    <p>
+                        Unlike traditional security tools that rely on static rules and signatures, CyberShield uses
+                        <strong>Isolation Forest algorithms</strong> to learn normal traffic patterns and identify deviations,
+                        combined with <strong>Large Language Models (Claude AI)</strong> for intelligent threat analysis and
+                        response planning. This hybrid approach enables detection of both known attack patterns and novel,
+                        zero-day threats.
+                    </p>
+                </div>
+            </section>
+
+            <!-- How It Works -->
+            <section class="about-section">
+                <h3>How Does It Work?</h3>
+                <div class="about-description">
+                    <p>
+                        CyberShield operates as a <strong>transparent analysis pipeline</strong> that processes network
+                        traffic in real-time. The system is designed around Domain-Driven Design (DDD) principles with
+                        a multi-agent architecture where specialized AI components work together autonomously.
+                    </p>
+
+                    <div class="feature-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon">01</div>
+                            <h4>Traffic Ingestion</h4>
+                            <p>
+                                Network packets are captured and normalized into structured events containing source/destination
+                                IPs, ports, protocols, packet sizes, and TCP flags. This data flows into the analysis pipeline
+                                via REST API or direct network tap integration.
+                            </p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">02</div>
+                            <h4>ML-Based Detection</h4>
+                            <p>
+                                Traffic features are extracted and fed into trained Isolation Forest models that identify
+                                statistical anomalies. The system calculates threat scores based on packet rates, protocol
+                                distributions, port scanning patterns, and behavioral signatures.
+                            </p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">03</div>
+                            <h4>AI-Powered Analysis</h4>
+                            <p>
+                                Detected anomalies are analyzed by Claude AI which classifies attack types (DDoS, SYN Flood,
+                                Port Scan, Brute Force, SQLi, XSS), assesses severity levels, and generates human-readable
+                                threat summaries with confidence scores.
+                            </p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">04</div>
+                            <h4>Automated Response</h4>
+                            <p>
+                                Based on threat classification, the system automatically generates and executes response
+                                plans - rate limiting suspicious IPs, blocking malicious sources, dropping connections,
+                                or escalating to human operators for critical threats.
+                            </p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">05</div>
+                            <h4>Real-Time Reporting</h4>
+                            <p>
+                                All events, detections, and responses are streamed to the dashboard via WebSocket connections,
+                                providing live visibility into system health, active threats, and mitigation effectiveness
+                                with detailed audit trails.
+                            </p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">06</div>
+                            <h4>Continuous Learning</h4>
+                            <p>
+                                The system maintains state in Redis for high-performance caching and can be configured to
+                                adapt its detection thresholds based on historical data, reducing false positives while
+                                maintaining sensitivity to genuine threats.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Pipeline Architecture -->
+            <section class="about-section">
+                <h3>Pipeline Architecture</h3>
+                <div class="about-description">
+                    <p>
+                        CyberShield can be deployed as an <strong>inline security gateway</strong> or
+                        <strong>out-of-band monitoring system</strong>. In inline mode, traffic passes through the
+                        system before reaching your application servers, enabling active blocking. In out-of-band mode,
+                        traffic is mirrored for analysis without impacting latency.
+                    </p>
+                </div>
+                <div class="architecture-diagram">
+                    <pre>
+    TRAFFIC FLOW (Inline Mode)
+    ===========================
+
+    Internet                                                    Your Application
+        |                                                              |
+        v                                                              |
+   +---------+      +------------------+      +-----------+            |
+   | Ingress |----->|   CyberShield    |----->|  Egress   |------------+
+   |  (IN)   |      |                  |      |   (OUT)   |
+   +---------+      |  +------------+  |      +-----------+
+                    |  | ML Engine  |  |            ^
+                    |  +-----+------+  |            |
+                    |        |         |       Clean Traffic
+                    |        v         |       (Threats Blocked)
+                    |  +------------+  |
+                    |  | AI Agents  |  |
+                    |  +-----+------+  |
+                    |        |         |
+                    |        v         |
+                    |  +------------+  |
+                    |  |  Response  |--+---> Block / Rate Limit / Alert
+                    |  |   Engine   |  |
+                    |  +------------+  |
+                    +------------------+
+                           |
+                           v
+                    +-------------+
+                    |  Dashboard  |  <-- Real-time Monitoring
+                    +-------------+
+                    </pre>
+                </div>
+            </section>
+
+            <!-- Key Capabilities -->
+            <section class="about-section">
+                <h3>Key Capabilities</h3>
+                <div class="capabilities-grid">
+                    <div class="capability-item">
+                        <div class="capability-header">
+                            <span class="capability-icon">DDoS</span>
+                            <h4>DDoS Protection</h4>
+                        </div>
+                        <p>Detects distributed denial-of-service attacks from botnet traffic patterns and high-volume floods from multiple sources.</p>
+                    </div>
+                    <div class="capability-item">
+                        <div class="capability-header">
+                            <span class="capability-icon">SYN</span>
+                            <h4>SYN Flood Detection</h4>
+                        </div>
+                        <p>Identifies TCP SYN flood attacks attempting to exhaust server resources through half-open connections.</p>
+                    </div>
+                    <div class="capability-item">
+                        <div class="capability-header">
+                            <span class="capability-icon">SCAN</span>
+                            <h4>Port Scan Detection</h4>
+                        </div>
+                        <p>Recognizes reconnaissance activities probing your infrastructure for open ports and vulnerable services.</p>
+                    </div>
+                    <div class="capability-item">
+                        <div class="capability-header">
+                            <span class="capability-icon">BF</span>
+                            <h4>Brute Force Prevention</h4>
+                        </div>
+                        <p>Blocks credential stuffing and password guessing attacks against authentication endpoints.</p>
+                    </div>
+                    <div class="capability-item">
+                        <div class="capability-header">
+                            <span class="capability-icon">SQLi</span>
+                            <h4>SQL Injection Defense</h4>
+                        </div>
+                        <p>Detects database exploitation attempts through malicious SQL payloads in HTTP requests.</p>
+                    </div>
+                    <div class="capability-item">
+                        <div class="capability-header">
+                            <span class="capability-icon">XSS</span>
+                            <h4>XSS Attack Mitigation</h4>
+                        </div>
+                        <p>Identifies cross-site scripting attempts injecting malicious scripts into web traffic.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Technology Stack -->
+            <section class="about-section">
+                <h3>Technology Stack</h3>
+                <div class="tech-stack-grid">
+                    <div class="tech-item">
+                        <h4>Machine Learning</h4>
+                        <p>Isolation Forest anomaly detection, feature engineering pipeline, real-time inference</p>
+                        <div class="tech-tags">
+                            <span class="tech-tag">scikit-learn</span>
+                            <span class="tech-tag">NumPy</span>
+                            <span class="tech-tag">Pandas</span>
+                        </div>
+                    </div>
+                    <div class="tech-item">
+                        <h4>AI / LLM</h4>
+                        <p>Multi-model architecture with Claude Sonnet 4.5 for orchestration and Haiku for fast agent execution</p>
+                        <div class="tech-tags">
+                            <span class="tech-tag">Anthropic API</span>
+                            <span class="tech-tag">Claude Sonnet 4.5</span>
+                            <span class="tech-tag">Claude Haiku</span>
+                        </div>
+                    </div>
+                    <div class="tech-item">
+                        <h4>Backend</h4>
+                        <p>High-performance async API with WebSocket support for real-time updates</p>
+                        <div class="tech-tags">
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">FastAPI</span>
+                            <span class="tech-tag">asyncio</span>
+                        </div>
+                    </div>
+                    <div class="tech-item">
+                        <h4>Data Layer</h4>
+                        <p>In-memory caching for high-speed lookups and pub/sub event distribution</p>
+                        <div class="tech-tags">
+                            <span class="tech-tag">Redis</span>
+                            <span class="tech-tag">LangCache</span>
+                        </div>
+                    </div>
+                    <div class="tech-item">
+                        <h4>Infrastructure</h4>
+                        <p>Containerized microservices with orchestration for scalable deployment</p>
+                        <div class="tech-tags">
+                            <span class="tech-tag">Docker</span>
+                            <span class="tech-tag">Compose</span>
+                        </div>
+                    </div>
+                    <div class="tech-item">
+                        <h4>Frontend</h4>
+                        <p>Real-time dashboard with live metrics, alerts, and threat visualization</p>
+                        <div class="tech-tags">
+                            <span class="tech-tag">JavaScript</span>
+                            <span class="tech-tag">WebSocket</span>
+                            <span class="tech-tag">CSS3</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Multi-Agent Architecture -->
+            <section class="about-section">
+                <h3>Multi-Agent Architecture</h3>
+                <div class="about-description">
+                    <p>
+                        CyberShield uses a <strong>hierarchical multi-model architecture</strong> similar to modern
+                        AI coding assistants. This approach optimizes for both accuracy and cost-effectiveness
+                        by using the right model for each task.
+                    </p>
+                </div>
+                <div class="architecture-diagram">
+                    <pre>
+    MULTI-MODEL AGENTIC PIPELINE
+    =============================
+
+    +---------------------------+
+    |       ORCHESTRATOR        |  Claude Sonnet 4.5
+    |     (Decision Layer)      |  - Threat triage and prioritization
+    +------------+--------------+  - Escalation decisions
+                 |                 - Human-in-the-loop gating
+            +----+----+
+            |         |
+            v         v
+    +-------+    +----------+
+    |ANALYZE|    |ESCALATE  |  (if human review needed)
+    | Haiku |    |to Human  |
+    +---+---+    +----+-----+
+        |             |
+        v             v
+    +-------+    +--------+
+    |RESPOND|    |Human   |
+    | Haiku |    |Decision|
+    +---+---+    +---+----+
+        |            |
+        v            v
+    +--------+  +--------+
+    |MITIGATE|  |APPROVE/|
+    | Haiku  |  |DISMISS |
+    +---+----+  +--------+
+        |
+        v
+    +--------+
+    |REPORT  |
+    | Haiku  |
+    +--------+
+                    </pre>
+                </div>
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">ORCH</div>
+                        <h4>Orchestrator (Sonnet 4.5)</h4>
+                        <p>
+                            The central coordinator uses Claude Sonnet 4.5 for complex reasoning tasks:
+                            threat correlation, severity assessment, and deciding when to escalate
+                            to human operators versus auto-mitigate.
+                        </p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">ANLZ</div>
+                        <h4>Analyzer Agent (Haiku)</h4>
+                        <p>
+                            Fast threat classification using Claude Haiku. Identifies attack types,
+                            calculates confidence scores, and determines indicators of compromise
+                            in milliseconds.
+                        </p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">RESP</div>
+                        <h4>Responder Agent (Haiku)</h4>
+                        <p>
+                            Plans appropriate response actions based on analysis. Determines primary
+                            and secondary actions, success criteria, and rollback strategies using
+                            cost-effective Haiku processing.
+                        </p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">EXEC</div>
+                        <h4>Mitigator Agent (Haiku)</h4>
+                        <p>
+                            Executes mitigation actions: IP blocking, rate limiting, connection drops,
+                            and honeypot redirects. Verifies action effectiveness and reports results.
+                        </p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">HITL</div>
+                        <h4>Human-in-the-Loop</h4>
+                        <p>
+                            Critical and high-severity threats are escalated to human operators.
+                            The system waits for human approval before executing mitigation,
+                            preventing false positives from causing service disruption.
+                        </p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">RPRT</div>
+                        <h4>Reporter Agent (Haiku)</h4>
+                        <p>
+                            Generates alerts, incident reports, and audit trails. Broadcasts
+                            events to the dashboard in real-time and persists records for
+                            compliance and analysis.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Integration -->
+            <section class="about-section">
+                <h3>Integration Options</h3>
+                <div class="about-description">
+                    <p>
+                        CyberShield is designed for flexible integration into existing infrastructure:
+                    </p>
+                    <ul class="integration-list">
+                        <li><strong>API Integration:</strong> Send traffic events directly via REST API for analysis and receive threat assessments</li>
+                        <li><strong>Network Tap:</strong> Mirror traffic from switches/routers for passive monitoring without inline deployment</li>
+                        <li><strong>Reverse Proxy:</strong> Deploy as a gateway that inspects and filters traffic before forwarding to upstream servers</li>
+                        <li><strong>Sidecar:</strong> Run alongside your application containers in Kubernetes for service mesh integration</li>
+                        <li><strong>Webhook Alerts:</strong> Configure outbound webhooks to notify external systems (SIEM, Slack, PagerDuty) of detected threats</li>
+                    </ul>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-left">
+                <span>CyberShield v0.1.0</span>
+            </div>
+            <div class="footer-right">
+                <span id="systemTime">--</span>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Update clock
+        function updateClock() {
+            document.getElementById('systemTime').textContent = new Date().toLocaleString();
+        }
+        updateClock();
+        setInterval(updateClock, 1000);
+    </script>
+</body>
+</html>

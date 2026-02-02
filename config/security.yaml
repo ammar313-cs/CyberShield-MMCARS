@@ -1,0 +1,26 @@
+# =============================================================================
+# CyberShield - Security Configuration
+# =============================================================================
+
+# Secret key for signing (change in production!)
+secret_key: your-secret-key-change-in-production
+
+# Allowed hosts for API access
+allowed_hosts:
+  - localhost
+  - 127.0.0.1
+
+# API Key Authentication
+# Generate new keys: python -c "import secrets; print(f'cs_{secrets.token_urlsafe(32)}')"
+api_keys: []  # Add your API keys here or via API_KEYS env var
+
+# Rate limiting
+rate_limit:
+  enabled: true
+  window_seconds: 60
+  max_requests: 100
+
+# IP blocking
+ip_blocking:
+  enabled: true
+  default_duration_seconds: 3600

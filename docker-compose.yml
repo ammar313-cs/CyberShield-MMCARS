@@ -1,0 +1,212 @@
+# =============================================================================
+# CyberShield - Multi-Model Cyber Attack Response System
+# Docker Compose Configuration
+# =============================================================================
+
+services:
+  # ---------------------------------------------------------------------------
+  # Main API Gateway Service
+  # ---------------------------------------------------------------------------
+  cybershield-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    container_name: cybershield-api
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - APP_ENV=production
+      - DEBUG=false
+      - LOG_LEVEL=INFO
+      - API_HOST=0.0.0.0
+      - API_PORT=8000
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      # For internal health checks, use localhost (same container)
+      - API_BASE_URL=http://localhost:8000
+    env_file:
+      - .env.local
+    volumes:
+      - ./src:/app/src:ro
+      - ./logs:/app/logs
+    depends_on:
+      redis:
+        condition: service_healthy
+    networks:
+      - cybershield-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  # ---------------------------------------------------------------------------
+  # ML Detection Service
+  # ---------------------------------------------------------------------------
+  cybershield-ml:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    container_name: cybershield-ml
+    restart: unless-stopped
+    environment:
+      - APP_ENV=production
+      - ML_SERVICE=true
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    env_file:
+      - .env.local
+    volumes:
+      - ./src:/app/src:ro
+      - ./src/ml/weights:/app/src/ml/weights
+    depends_on:
+      redis:
+        condition: service_healthy
+    networks:
+      - cybershield-network
+    command: ["python", "-m", "src.ml.inference.predictor"]
+
+  # ---------------------------------------------------------------------------
+  # Agent Coordination Service
+  # ---------------------------------------------------------------------------
+  cybershield-agents:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    container_name: cybershield-agents
+    restart: unless-stopped
+    environment:
+      - APP_ENV=production
+      - AGENT_SERVICE=true
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      # API host for health checks (Docker network name)
+      - API_BASE_URL=http://cybershield-api:8000
+    env_file:
+      - .env.local
+    volumes:
+      - ./src:/app/src:ro
+    depends_on:
+      redis:
+        condition: service_healthy
+      cybershield-ml:
+        condition: service_started
+    networks:
+      - cybershield-network
+    command: ["python", "-m", "src.agents.coordinator.orchestrator"]
+
+  # ---------------------------------------------------------------------------
+  # Dashboard Service
+  # ---------------------------------------------------------------------------
+  cybershield-dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    container_name: cybershield-dashboard
+    restart: unless-stopped
+    ports:
+      - "8081:8081"
+    environment:
+      - APP_ENV=production
+      - DASHBOARD_HOST=0.0.0.0
+      - DASHBOARD_PORT=8081
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      # API host for health checks (Docker network name)
+      - API_BASE_URL=http://cybershield-api:8000
+    env_file:
+      - .env.local
+    volumes:
+      - ./src:/app/src:ro
+      # Mount Docker socket for container health checks (read-only)
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    depends_on:
+      - cybershield-api
+    networks:
+      - cybershield-network
+    command: ["python", "-m", "src.dashboard.backend.dashboard_service"]
+
+  # ---------------------------------------------------------------------------
+  # Reverse Proxy Gateway Service
+  # ---------------------------------------------------------------------------
+  cybershield-proxy:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    container_name: cybershield-proxy
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      - APP_ENV=production
+      - PROXY_HOST=0.0.0.0
+      - PROXY_PORT=8080
+      # Forward to internal API service
+      - PROXY_UPSTREAMS=cybershield-api:8000:1
+      - PROXY_INSPECTION_MODE=active
+      - PROXY_THREAT_THRESHOLD=0.7
+      - PROXY_RATE_LIMIT=100
+      - PROXY_RATE_WINDOW=60
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    env_file:
+      - .env.local
+    volumes:
+      - ./src:/app/src:ro
+      - ./logs:/app/logs
+    depends_on:
+      cybershield-api:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - cybershield-network
+    command: ["python", "-m", "src.proxy.server"]
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/_proxy/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  # ---------------------------------------------------------------------------
+  # Redis Cache (Local Development)
+  # ---------------------------------------------------------------------------
+  redis:
+    image: redis:7-alpine
+    container_name: cybershield-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - cybershield-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    command: redis-server --appendonly yes
+
+# =============================================================================
+# Networks
+# =============================================================================
+networks:
+  cybershield-network:
+    driver: bridge
+    name: cybershield-network
+
+# =============================================================================
+# Volumes
+# =============================================================================
+volumes:
+  redis-data:
+    name: cybershield-redis-data

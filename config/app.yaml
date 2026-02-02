@@ -1,0 +1,20 @@
+# =============================================================================
+# CyberShield - Application Configuration
+# =============================================================================
+
+# Application metadata
+name: CyberShield
+env: development  # development, staging, production
+version: 0.1.0
+
+# Logging
+debug: true
+log_level: INFO  # DEBUG, INFO, WARNING, ERROR, CRITICAL
+
+# API Server
+api:
+  host: 0.0.0.0
+  port: 8000
+  workers: 4
+  cors_origins:
+    - "*"  # Configure appropriately in production

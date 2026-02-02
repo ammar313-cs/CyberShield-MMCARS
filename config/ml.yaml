@@ -1,0 +1,32 @@
+# =============================================================================
+# CyberShield - Machine Learning Configuration
+# =============================================================================
+
+# Model storage
+model_path: src/ml/weights
+
+# Detection thresholds
+thresholds:
+  anomaly: 0.7       # Isolation Forest anomaly threshold
+  pattern: 0.8       # Pattern classifier confidence threshold
+  timeseries: 0.75   # Time series anomaly threshold
+
+# Ensemble model weights
+# Order: [anomaly_detector, pattern_classifier, timeseries_analyzer]
+ensemble_weights:
+  - 0.4  # Anomaly detector weight
+  - 0.3  # Pattern classifier weight
+  - 0.3  # Timeseries analyzer weight
+
+# Feature extraction
+features:
+  window_size: 100        # Number of packets to analyze
+  update_interval: 1.0    # Seconds between feature updates
+  normalize: true         # Normalize features before prediction
+
+# Model training
+training:
+  batch_size: 32
+  epochs: 100
+  validation_split: 0.2
+  early_stopping_patience: 10

@@ -1,0 +1,25 @@
+# =============================================================================
+# CyberShield - Dashboard Configuration
+# =============================================================================
+
+# Server
+host: 0.0.0.0
+port: 8080
+
+# WebSocket
+websocket:
+  heartbeat_interval_seconds: 30
+  max_connections: 100
+  message_rate_limit: 100  # messages per second
+
+# UI updates
+updates:
+  status_interval_seconds: 5
+  metrics_interval_seconds: 10
+  threats_interval_seconds: 2
+
+# Display
+display:
+  max_alerts: 50
+  max_threats: 100
+  date_format: "%Y-%m-%d %H:%M:%S"

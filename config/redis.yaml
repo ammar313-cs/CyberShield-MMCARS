@@ -1,0 +1,29 @@
+# =============================================================================
+# CyberShield - Redis/Cache Configuration
+# =============================================================================
+
+# LangCache (production - cloud Redis)
+langcache:
+  url: https://aws-us-east-1.langcache.redis.io
+  # api_key and cache_id should be set via env vars:
+  # LANG_CACHE_API_KEY, CACHE_ID
+
+# Local Redis (development)
+local:
+  host: localhost
+  port: 6379
+  password: ""
+  db: 0
+
+# Connection settings
+connection:
+  timeout_seconds: 5
+  retry_count: 3
+  retry_delay_ms: 1000
+
+# Cache TTL defaults (seconds)
+ttl:
+  threats: 3600        # Active threat cache
+  agent_state: 300     # Agent coordination state
+  rate_limit: 60       # Rate limit counters
+  session: 86400       # Dashboard sessions
